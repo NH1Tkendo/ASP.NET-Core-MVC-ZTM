@@ -1,0 +1,11 @@
+﻿@model IEnumerable<EntityModel.Post>
+
+<h2>Danh sách Post</h2>
+<ul>
+    @foreach (var post in Model)
+    {
+        <li>@post.PostId</li>
+        <li>@post.Title</li>
+        <li>@post.Content</li>
+    }
+</ul>

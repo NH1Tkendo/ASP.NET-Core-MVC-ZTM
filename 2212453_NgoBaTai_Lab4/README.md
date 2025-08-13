@@ -1,4 +1,4 @@
-##Các khó khăn trong quá trình làm bài và cách giải quyết
+#Các khó khăn trong quá trình làm bài và cách giải quyết
 
 ### Trong thư mục Views tạo View Index mới sử dụng Layout mặc định là Shared/\_Layout.cshtml
 

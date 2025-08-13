@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ var myMessage = "Hello World"; }
+<h2>Hello world</h2>
+<div class="container">
+    <h2>Button Styles</h2>
+    <button type="button" class="btn btn-default">Default</button>
+    <button type="button" class="btn btn-primary">Primary</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-link">Link</button>
+</div>
+<div>
+    <p>@DateTime.Now</p>
+
+    @for (var i = 10; i < 21; i++)
+    {<p>Line @i</p>}
+
+    @myMessage
+
+</div>

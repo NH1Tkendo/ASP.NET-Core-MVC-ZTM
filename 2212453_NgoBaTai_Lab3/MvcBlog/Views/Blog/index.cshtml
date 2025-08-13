@@ -1,0 +1,9 @@
+﻿@model IEnumerable<EntityModel.Blog>
+
+<h2>Danh sách Blog</h2>
+<ul>
+    @foreach (var blog in Model)
+    {
+        <li>@blog.Name</li>
+    }
+</ul>

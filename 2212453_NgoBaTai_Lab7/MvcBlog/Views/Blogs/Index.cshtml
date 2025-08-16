@@ -23,45 +23,22 @@
         <br />
         <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
         <a href="@Url.Action("Index", "Blogs")" class="btn btn-default">Xóa lọc</a>
-
-        <form method="get" action="@Url.Action("Index")">
-            Show
-            <select name="pageSize" onchange="this.form.submit()">
-                <option value="10" @(ViewBag.PageSize == 1 ? "selected" : "")>1</option>
-                <option value="25" @(ViewBag.PageSize == 5 ? "selected" : "")>5</option>
-                <option value="50" @(ViewBag.PageSize == 10 ? "selected" : "")>10</option>
-                <option value="100" @(ViewBag.PageSize == 20 ? "selected" : "")>20</option>
-            </select>
-            entries
-        </form>
     </div>
 }
 
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
-            @if (ViewBag.CurrentSort == "name_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "name_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.First().Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Url)
         </th>
         <th>
-            @Html.ActionLink("Owner", "Index", new { sortOrder = ViewBag.OwnerSortParm })
-            @if (ViewBag.CurrentSort == "owner_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "owner_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.First().Owner)
         </th>
         <th>
-            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescSortParm })
-            @if (ViewBag.CurrentSort == "desc_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "desc_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Rank)

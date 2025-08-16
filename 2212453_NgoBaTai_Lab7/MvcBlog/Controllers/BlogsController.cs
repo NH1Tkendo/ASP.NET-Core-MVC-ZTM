@@ -1,13 +1,12 @@
-﻿using EntityModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using EntityModel;
 
 namespace MvcBlog.Controllers
 {
@@ -16,27 +15,20 @@ namespace MvcBlog.Controllers
         private EF db = new EF();
 
         // GET: Blogs
-        public ViewResult Index(string sortOrder, string searchString, int? page, int pageSize = 10)
+        public ViewResult Index(string sortOrder, string searchString)
         {
-            ViewBag.PageSize = pageSize;
-            // Giữ sort hiện tại để trả về view
+            // Thiết lập các tham số sort cho View
             ViewBag.CurrentSort = sortOrder;
-
-            // Tạo các biến sort (toggle ASC/DESC)
-            ViewBag.NameSortParm = sortOrder == "name_asc" ? "name_desc" : "name_asc";
-            ViewBag.DescSortParm = sortOrder == "desc_asc" ? "desc_desc" : "desc_asc";
-            ViewBag.OwnerSortParm = sortOrder == "owner_asc" ? "owner_desc" : "owner_asc";
-
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+    
             // Lấy danh sách blog ban đầu
             var blogs = from s in db.Blogs
                         select s;
 
-            // Dropdown lọc theo Owner (nếu cần)
             ViewBag.OwnerList = new SelectList(db.Blogs
-                                           .Select(b => b.Owner)
-                                           .Distinct()
-                                           .ToList());
-
+                                          .Select(b => b.Owner)
+                                          .Distinct()
+                                          .ToList());
             // Tìm kiếm
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -45,35 +37,8 @@ namespace MvcBlog.Controllers
                                       || s.Owner.Contains(searchString));
             }
 
-            // Xử lý Sort
-            switch (sortOrder)
-            {
-                case "name_asc":
-                    blogs = blogs.OrderBy(s => s.Name);
-                    break;
-                case "name_desc":
-                    blogs = blogs.OrderByDescending(s => s.Name);
-                    break;
-                case "desc_asc":
-                    blogs = blogs.OrderBy(s => s.Description);
-                    break;
-                case "desc_desc":
-                    blogs = blogs.OrderByDescending(s => s.Description);
-                    break;
-                case "owner_asc":
-                    blogs = blogs.OrderBy(s => s.Owner);
-                    break;
-                case "owner_desc":
-                    blogs = blogs.OrderByDescending(s => s.Owner);
-                    break;
-                default:
-                    blogs = blogs.OrderBy(s => s.Name); // mặc định sort theo Name
-                    break;
-            }
-
-            return View(blogs.ToList().Take(pageSize));
+            return View(blogs.ToList());
         }
-
 
         // GET: Blogs/Details/5
         public ActionResult Details(int? id)

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<MvcBlog.Models.BlogStatistic>
+
+<h2>Blog Statistics</h2>
+
+<table class="table">
+    <tr>
+        <th>Blog Name</th>
+        <th>Number of Posts</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Owner</td>
+            <td>@item.BlogCount</td>
+        </tr>
+    }
+</table>
+
+

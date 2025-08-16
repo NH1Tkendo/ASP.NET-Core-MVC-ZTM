@@ -15,21 +15,18 @@ namespace MvcBlog.Controllers
         private EF db = new EF();
 
         // GET: Posts
-        public ActionResult Index(int? blogId, string searchString, DateTime? fromDate, DateTime? toDate, string sortOrder, int pageSize = 10)
+        public ActionResult Index(int? blogId, string searchString, DateTime? fromDate, DateTime? toDate, string sortOrder)
         {
-            // giữ trạng thái
+            // giữ trạng thái để hiển thị lại trên view
             ViewBag.CurrentSearch = searchString;
             ViewBag.CurrentBlogId = blogId;
             ViewBag.FromDate = fromDate?.ToString("yyyy-MM-dd");
             ViewBag.ToDate = toDate?.ToString("yyyy-MM-dd");
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.PageSize = pageSize;
 
-            // tham số sort (toggle)
-            ViewBag.TitleSortParm = sortOrder == "title_asc" ? "title_desc" : "title_asc";
-            ViewBag.ContentSortParm = sortOrder == "content_asc" ? "content_desc" : "content_asc";
-            ViewBag.DateSortParm = sortOrder == "date_asc" ? "date_desc" : "date_asc";
-            ViewBag.BlogSortParm = sortOrder == "blog_asc" ? "blog_desc" : "blog_asc";
+            // tham số sort
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
             var posts = from p in db.Posts.Include("Blog")
                         select p;
@@ -68,43 +65,13 @@ namespace MvcBlog.Controllers
                 posts = posts.Where(p => p.CreatedDate <= toDate.Value);
             }
 
-            // --- xử lý Sort ---
-            switch (sortOrder)
-            {
-                case "title_asc":
-                    posts = posts.OrderBy(p => p.Title);
-                    break;
-                case "title_desc":
-                    posts = posts.OrderByDescending(p => p.Title);
-                    break;
-                case "content_asc":
-                    posts = posts.OrderBy(p => p.Content);
-                    break;
-                case "content_desc":
-                    posts = posts.OrderByDescending(p => p.Content);
-                    break;
-                case "date_asc":
-                    posts = posts.OrderBy(p => p.CreatedDate);
-                    break;
-                case "date_desc":
-                    posts = posts.OrderByDescending(p => p.CreatedDate);
-                    break;
-                case "blog_asc":
-                    posts = posts.OrderBy(p => p.Blog.Name);
-                    break;
-                case "blog_desc":
-                    posts = posts.OrderByDescending(p => p.Blog.Name);
-                    break;
-                default:
-                    posts = posts.OrderBy(p => p.Title); // mặc định
-                    break;
-            }
-
             // --- DropDownList Blog ---
             ViewBag.BlogList = new SelectList(db.Blogs.ToList(), "BlogId", "Name", blogId);
 
-            return View(posts.ToList().Take(pageSize)); // chỉ lấy pageSize dòng
+            return View(posts.ToList());
         }
+
+
 
         // GET: Posts/Details/5
         public ActionResult Details(int? id)

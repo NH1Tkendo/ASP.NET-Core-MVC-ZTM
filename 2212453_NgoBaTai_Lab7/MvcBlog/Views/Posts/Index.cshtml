@@ -19,7 +19,7 @@
 
         <label>Tìm theo tiêu đề/nội dung:</label>
         @Html.TextBox("searchString", Request.QueryString["searchString"], new { @class = "form-control" })
-
+        
         <label>Từ ngày:</label>
         <input type="date" name="fromDate" value="@Request.QueryString["fromDate"]" class="form-control" />
 
@@ -29,49 +29,22 @@
         <br />
         <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
         <a href="@Url.Action("Index", "Posts")" class="btn btn-default">Xóa lọc</a>
-
-        <form method="get" action="@Url.Action("Index")">
-            Show
-            <select name="pageSize" onchange="this.form.submit()">
-                <option value="1" @(ViewBag.PageSize == 1 ? "selected" : "")>1</option>
-                <option value="5" @(ViewBag.PageSize == 5 ? "selected" : "")>5</option>
-                <option value="10" @(ViewBag.PageSize == 10 ? "selected" : "")>10</option>
-                <option value="15" @(ViewBag.PageSize == 15 ? "selected" : "")>15</option>
-            </select>
-            entries
-        </form>
     </div>
 }
 
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleSortParm })
-            @if (ViewBag.CurrentSort == "title_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "title_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.ActionLink("Content", "Index", new { sortOrder = ViewBag.ContentSortParm })
-            @if (ViewBag.CurrentSort == "content_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "content_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.Content)
         </th>
         <th>
-            @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.DateSortParm })
-            @if (ViewBag.CurrentSort == "date_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "date_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.CreatedDate)
         </th>
         <th>
-            @Html.ActionLink("Blog", "Index", new { sortOrder = ViewBag.BlogSortParm })
-            @if (ViewBag.CurrentSort == "blog_asc")
-            {<span>↑</span> }
-            else if (ViewBag.CurrentSort == "blog_desc")
-            { <span>↓</span>}
+            @Html.DisplayNameFor(model => model.Blog.Name)
         </th>
         <th></th>
     </tr>

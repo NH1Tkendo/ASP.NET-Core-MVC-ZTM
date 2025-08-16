@@ -15,29 +15,9 @@ namespace MvcBlog.Controllers
         private EF db = new EF();
 
         // GET: Blogs
-        public ViewResult Index(string sortOrder, string searchString)
+        public ActionResult Index()
         {
-            // Thiết lập các tham số sort cho View
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-    
-            // Lấy danh sách blog ban đầu
-            var blogs = from s in db.Blogs
-                        select s;
-
-            ViewBag.OwnerList = new SelectList(db.Blogs
-                                          .Select(b => b.Owner)
-                                          .Distinct()
-                                          .ToList());
-            // Tìm kiếm
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                blogs = blogs.Where(s => s.Name.Contains(searchString)
-                                      || s.Description.Contains(searchString)
-                                      || s.Owner.Contains(searchString));
-            }
-
-            return View(blogs.ToList());
+            return View(db.Blogs.ToList());
         }
 
         // GET: Blogs/Details/5

@@ -10,6 +10,22 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@using (Html.BeginForm("Index", "Blogs", FormMethod.Get))
+{
+    <div>
+        <label>Tìm theo tên Blog:</label>
+        @Html.TextBox("searchString", Request.QueryString["searchString"], new { @class = "form-control" })
+
+        <label>Tìm theo chủ nhân Blog:</label>
+        @Html.DropDownList("Owner", (SelectList)ViewBag.OwnerList, "-- Chọn Owner --", new { @class = "form-control" })
+
+        <br />
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <a href="@Url.Action("Index", "Blogs")" class="btn btn-default">Xóa lọc</a>
+    </div>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -30,51 +46,52 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    string rankColor = "black"; // Mặc định
-    if (item.Rank >= 85 && item.Rank <= 100)
+    @foreach (var item in Model)
     {
-        rankColor = "red";
-    }
-    else if (item.Rank >= 70 && item.Rank <= 84)
-    {
-        rankColor = "yellow";
-    }
-    else if (item.Rank >= 55 && item.Rank <= 69)
-    {
-        rankColor = "blue";
-    }
-    else if (item.Rank >= 40 && item.Rank <= 54)
-    {
-        rankColor = "lightblue";
-    }
-    else if (item.Rank < 40)
-    {
-        rankColor = "black";
-    }
+        string rankColor = "black"; // Mặc định
+        if (item.Rank >= 85 && item.Rank <= 100)
+        {
+            rankColor = "red";
+        }
+        else if (item.Rank >= 70 && item.Rank <= 84)
+        {
+            rankColor = "yellow";
+        }
+        else if (item.Rank >= 55 && item.Rank <= 69)
+        {
+            rankColor = "blue";
+        }
+        else if (item.Rank >= 40 && item.Rank <= 54)
+        {
+            rankColor = "lightblue";
+        }
+        else if (item.Rank < 40)
+        {
+            rankColor = "black";
+        }
 
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Url)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Owner)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td style="color:@rankColor">
-            @Html.DisplayFor(modelItem => item.Rank)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BlogId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BlogId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BlogId })
-        </td>
-    </tr>
-}
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td style="color:@rankColor">
+                @Html.DisplayFor(modelItem => item.Rank)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BlogId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.BlogId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.BlogId })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -15,11 +15,63 @@ namespace MvcBlog.Controllers
         private EF db = new EF();
 
         // GET: Posts
-        public ActionResult Index()
+        public ActionResult Index(int? blogId, string searchString, DateTime? fromDate, DateTime? toDate, string sortOrder)
         {
-            var posts = db.Posts.Include(p => p.Blog);
+            // giữ trạng thái để hiển thị lại trên view
+            ViewBag.CurrentSearch = searchString;
+            ViewBag.CurrentBlogId = blogId;
+            ViewBag.FromDate = fromDate?.ToString("yyyy-MM-dd");
+            ViewBag.ToDate = toDate?.ToString("yyyy-MM-dd");
+            ViewBag.CurrentSort = sortOrder;
+
+            // tham số sort
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            var posts = from p in db.Posts.Include("Blog")
+                        select p;
+
+            // --- lọc theo BlogId ---
+            if (blogId.HasValue && blogId > 0)
+            {
+                posts = posts.Where(p => p.BlogId == blogId.Value);
+            }
+
+            // --- lọc theo searchString ---
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                posts = posts.Where(p => p.Title.Contains(searchString)
+                                      || p.Content.Contains(searchString));
+            }
+
+            // --- lọc theo khoảng ngày ---
+            if (fromDate.HasValue && toDate.HasValue)
+            {
+                if (toDate.Value < fromDate.Value)
+                {
+                    ModelState.AddModelError("", "Ngày kết thúc phải >= ngày bắt đầu.");
+                }
+                else
+                {
+                    posts = posts.Where(p => p.CreatedDate >= fromDate.Value && p.CreatedDate <= toDate.Value);
+                }
+            }
+            else if (fromDate.HasValue)
+            {
+                posts = posts.Where(p => p.CreatedDate >= fromDate.Value);
+            }
+            else if (toDate.HasValue)
+            {
+                posts = posts.Where(p => p.CreatedDate <= toDate.Value);
+            }
+
+            // --- DropDownList Blog ---
+            ViewBag.BlogList = new SelectList(db.Blogs.ToList(), "BlogId", "Name", blogId);
+
             return View(posts.ToList());
         }
+
+
 
         // GET: Posts/Details/5
         public ActionResult Details(int? id)

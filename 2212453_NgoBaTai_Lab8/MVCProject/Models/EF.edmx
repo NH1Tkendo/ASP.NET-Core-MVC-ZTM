@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MVCDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="GroupID" Type="int" />
+          <Property Name="Level" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <EntityType Name="AccountGroup">
+          <Key>
+            <PropertyRef Name="AccountGroupID" />
+          </Key>
+          <Property Name="AccountGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="ConfigID" />
+          </Key>
+          <Property Name="ConfigID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConfigName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ConfigValue" Type="ntext" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <EntityType Name="GroupPath">
+          <Key>
+            <PropertyRef Name="GroupPathID" />
+          </Key>
+          <Property Name="GroupPathID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="PathID" Type="int" Nullable="false" />
+          <Property Name="AccessMaskID" Type="int" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogDescription" Type="ntext" />
+          <Property Name="LogDate" Type="datetime" />
+          <Property Name="AccountID" Type="int" />
+          <Property Name="ReceiverID" Type="int" />
+          <Property Name="GroupID" Type="int" />
+          <Property Name="Active" Type="int" />
+          <Property Name="LogCategoryID" Type="int" />
+        </EntityType>
+        <EntityType Name="LogCategory">
+          <Key>
+            <PropertyRef Name="LogCategoryID" />
+          </Key>
+          <Property Name="LogCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogCategoryName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogCategoryDescription" Type="ntext" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <EntityType Name="Path">
+          <Key>
+            <PropertyRef Name="PathID" />
+          </Key>
+          <Property Name="PathID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PathName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PathDescription" Type="nvarchar" MaxLength="500" />
+          <Property Name="PathURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="ImageURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="OrderNo" Type="int" />
+          <Property Name="Display" Type="int" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="Active" Type="int" />
+        </EntityType>
+        <Association Name="FK__AccountGr__Accou__3D5E1FD2">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AccountGroup" Type="Self.AccountGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="AccountGroup">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AccountGr__Group__3C69FB99">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="AccountGroup" Type="Self.AccountGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="AccountGroup">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPath__Group__4222D4EF">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="GroupPath" Type="Self.GroupPath" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="GroupPath">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPath__PathI__4316F928">
+          <End Role="Path" Type="Self.Path" Multiplicity="1" />
+          <End Role="GroupPath" Type="Self.GroupPath" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Path">
+              <PropertyRef Name="PathID" />
+            </Principal>
+            <Dependent Role="GroupPath">
+              <PropertyRef Name="PathID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Log__AccountID__48CFD27E">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Log__GroupID__49C3F6B7">
+          <End Role="Group" Type="Self.Group" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Log__LogCategory__4AB81AF0">
+          <End Role="LogCategory" Type="Self.LogCategory" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LogCategory">
+              <PropertyRef Name="LogCategoryID" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="LogCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MVCDatabaseModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountGroup" EntityType="Self.AccountGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupPath" EntityType="Self.GroupPath" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogCategory" EntityType="Self.LogCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Path" EntityType="Self.Path" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AccountGr__Accou__3D5E1FD2" Association="Self.FK__AccountGr__Accou__3D5E1FD2">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountGroup" EntitySet="AccountGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AccountGr__Group__3C69FB99" Association="Self.FK__AccountGr__Group__3C69FB99">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="AccountGroup" EntitySet="AccountGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPath__Group__4222D4EF" Association="Self.FK__GroupPath__Group__4222D4EF">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="GroupPath" EntitySet="GroupPath" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPath__PathI__4316F928" Association="Self.FK__GroupPath__PathI__4316F928">
+            <End Role="Path" EntitySet="Path" />
+            <End Role="GroupPath" EntitySet="GroupPath" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Log__AccountID__48CFD27E" Association="Self.FK__Log__AccountID__48CFD27E">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Log" EntitySet="Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Log__GroupID__49C3F6B7" Association="Self.FK__Log__GroupID__49C3F6B7">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Log" EntitySet="Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Log__LogCategory__4AB81AF0" Association="Self.FK__Log__LogCategory__4AB81AF0">
+            <End Role="LogCategory" EntitySet="LogCategory" />
+            <End Role="Log" EntitySet="Log" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MVCDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="3" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="GroupID" Type="Int32" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="Active" Type="Int32" />
+          <NavigationProperty Name="AccountGroups" Relationship="Self.FK__AccountGr__Accou__3D5E1FD2" FromRole="Account" ToRole="AccountGroup" />
+          <NavigationProperty Name="Logs" Relationship="Self.FK__Log__AccountID__48CFD27E" FromRole="Account" ToRole="Log" />
+        </EntityType>
+        <EntityType Name="AccountGroup">
+          <Key>
+            <PropertyRef Name="AccountGroupID" />
+          </Key>
+          <Property Name="AccountGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__AccountGr__Accou__3D5E1FD2" FromRole="AccountGroup" ToRole="Account" />
+          <NavigationProperty Name="Group" Relationship="Self.FK__AccountGr__Group__3C69FB99" FromRole="AccountGroup" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="ConfigID" />
+          </Key>
+          <Property Name="ConfigID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ConfigValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="Active" Type="Int32" />
+          <NavigationProperty Name="AccountGroups" Relationship="Self.FK__AccountGr__Group__3C69FB99" FromRole="Group" ToRole="AccountGroup" />
+          <NavigationProperty Name="GroupPaths" Relationship="Self.FK__GroupPath__Group__4222D4EF" FromRole="Group" ToRole="GroupPath" />
+          <NavigationProperty Name="Logs" Relationship="Self.FK__Log__GroupID__49C3F6B7" FromRole="Group" ToRole="Log" />
+        </EntityType>
+        <EntityType Name="GroupPath">
+          <Key>
+            <PropertyRef Name="GroupPathID" />
+          </Key>
+          <Property Name="GroupPathID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="PathID" Type="Int32" Nullable="false" />
+          <Property Name="AccessMaskID" Type="Int32" />
+          <NavigationProperty Name="Group" Relationship="Self.FK__GroupPath__Group__4222D4EF" FromRole="GroupPath" ToRole="Group" />
+          <NavigationProperty Name="Path" Relationship="Self.FK__GroupPath__PathI__4316F928" FromRole="GroupPath" ToRole="Path" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LogDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogDate" Type="DateTime" Precision="3" />
+          <Property Name="AccountID" Type="Int32" />
+          <Property Name="ReceiverID" Type="Int32" />
+          <Property Name="GroupID" Type="Int32" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="LogCategoryID" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Log__AccountID__48CFD27E" FromRole="Log" ToRole="Account" />
+          <NavigationProperty Name="Group" Relationship="Self.FK__Log__GroupID__49C3F6B7" FromRole="Log" ToRole="Group" />
+          <NavigationProperty Name="LogCategory" Relationship="Self.FK__Log__LogCategory__4AB81AF0" FromRole="Log" ToRole="LogCategory" />
+        </EntityType>
+        <EntityType Name="LogCategory">
+          <Key>
+            <PropertyRef Name="LogCategoryID" />
+          </Key>
+          <Property Name="LogCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LogCategoryDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Int32" />
+          <NavigationProperty Name="Logs" Relationship="Self.FK__Log__LogCategory__4AB81AF0" FromRole="LogCategory" ToRole="Log" />
+        </EntityType>
+        <EntityType Name="Path">
+          <Key>
+            <PropertyRef Name="PathID" />
+          </Key>
+          <Property Name="PathID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PathName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PathDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PathURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImageURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNo" Type="Int32" />
+          <Property Name="Display" Type="Int32" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="Active" Type="Int32" />
+          <NavigationProperty Name="GroupPaths" Relationship="Self.FK__GroupPath__PathI__4316F928" FromRole="Path" ToRole="GroupPath" />
+        </EntityType>
+        <Association Name="FK__AccountGr__Accou__3D5E1FD2">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AccountGroup" Type="Self.AccountGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="AccountGroup">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Log__AccountID__48CFD27E">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AccountGr__Group__3C69FB99">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="AccountGroup" Type="Self.AccountGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="AccountGroup">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPath__Group__4222D4EF">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="GroupPath" Type="Self.GroupPath" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="GroupPath">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Log__GroupID__49C3F6B7">
+          <End Role="Group" Type="Self.Group" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GroupPath__PathI__4316F928">
+          <End Role="Path" Type="Self.Path" Multiplicity="1" />
+          <End Role="GroupPath" Type="Self.GroupPath" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Path">
+              <PropertyRef Name="PathID" />
+            </Principal>
+            <Dependent Role="GroupPath">
+              <PropertyRef Name="PathID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Log__LogCategory__4AB81AF0">
+          <End Role="LogCategory" Type="Self.LogCategory" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LogCategory">
+              <PropertyRef Name="LogCategoryID" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="LogCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MVCDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="AccountGroups" EntityType="Self.AccountGroup" />
+          <EntitySet Name="Configs" EntityType="Self.Config" />
+          <EntitySet Name="Groups" EntityType="Self.Group" />
+          <EntitySet Name="GroupPaths" EntityType="Self.GroupPath" />
+          <EntitySet Name="Logs" EntityType="Self.Log" />
+          <EntitySet Name="LogCategories" EntityType="Self.LogCategory" />
+          <EntitySet Name="Paths" EntityType="Self.Path" />
+          <AssociationSet Name="FK__AccountGr__Accou__3D5E1FD2" Association="Self.FK__AccountGr__Accou__3D5E1FD2">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="AccountGroup" EntitySet="AccountGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Log__AccountID__48CFD27E" Association="Self.FK__Log__AccountID__48CFD27E">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Log" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AccountGr__Group__3C69FB99" Association="Self.FK__AccountGr__Group__3C69FB99">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="AccountGroup" EntitySet="AccountGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPath__Group__4222D4EF" Association="Self.FK__GroupPath__Group__4222D4EF">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="GroupPath" EntitySet="GroupPaths" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Log__GroupID__49C3F6B7" Association="Self.FK__Log__GroupID__49C3F6B7">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="Log" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GroupPath__PathI__4316F928" Association="Self.FK__GroupPath__PathI__4316F928">
+            <End Role="Path" EntitySet="Paths" />
+            <End Role="GroupPath" EntitySet="GroupPaths" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Log__LogCategory__4AB81AF0" Association="Self.FK__Log__LogCategory__4AB81AF0">
+            <End Role="LogCategory" EntitySet="LogCategories" />
+            <End Role="Log" EntitySet="Logs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MVCDatabaseModelStoreContainer" CdmEntityContainer="MVCDatabaseEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountGroups">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.AccountGroup">
+              <MappingFragment StoreEntitySet="AccountGroup">
+                <ScalarProperty Name="AccountGroupID" ColumnName="AccountGroupID" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Configs">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.Config">
+              <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="ConfigID" ColumnName="ConfigID" />
+                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupPaths">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.GroupPath">
+              <MappingFragment StoreEntitySet="GroupPath">
+                <ScalarProperty Name="GroupPathID" ColumnName="GroupPathID" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="PathID" ColumnName="PathID" />
+                <ScalarProperty Name="AccessMaskID" ColumnName="AccessMaskID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+                <ScalarProperty Name="LogName" ColumnName="LogName" />
+                <ScalarProperty Name="LogDescription" ColumnName="LogDescription" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="LogCategoryID" ColumnName="LogCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogCategories">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.LogCategory">
+              <MappingFragment StoreEntitySet="LogCategory">
+                <ScalarProperty Name="LogCategoryID" ColumnName="LogCategoryID" />
+                <ScalarProperty Name="LogCategoryName" ColumnName="LogCategoryName" />
+                <ScalarProperty Name="LogCategoryDescription" ColumnName="LogCategoryDescription" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paths">
+            <EntityTypeMapping TypeName="MVCDatabaseModel.Path">
+              <MappingFragment StoreEntitySet="Path">
+                <ScalarProperty Name="PathID" ColumnName="PathID" />
+                <ScalarProperty Name="PathName" ColumnName="PathName" />
+                <ScalarProperty Name="PathDescription" ColumnName="PathDescription" />
+                <ScalarProperty Name="PathURL" ColumnName="PathURL" />
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="Display" ColumnName="Display" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

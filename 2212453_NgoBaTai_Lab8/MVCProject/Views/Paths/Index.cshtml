@@ -1,0 +1,89 @@
+﻿@model IEnumerable<MVCProject.Models.Path>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var parentIds = Model.Select(p => new { p.PathURL, p.PathName}).Distinct().ToList();
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<h3>Parent Links</h3>
+<ul>
+    @foreach (var pid in parentIds)
+    {
+        <li>
+            <a href="@pid.PathURL">@pid.PathName</a>
+        </li>
+    }
+</ul>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PathName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PathDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PathURL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageURL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Display)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ParentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PathName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PathDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PathURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Display)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PathID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PathID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PathID })
+            </td>
+        </tr>
+    }
+
+</table>
